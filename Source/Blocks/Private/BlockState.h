@@ -5,6 +5,7 @@
 #include "BlockDirection.h"
 #include "BlocksComponent.h"
 #include "CoreMinimal.h"
+#include "Math/Axis.h"
 #include "UObject/NoExportTypes.h"
 
 #include "BlockState.generated.h"
@@ -26,7 +27,7 @@ public:
     const FIntVector& GetLocation() const;
 
     template <class T>
-    TArray<T*> GetNeighboringStates() const;
+    TArray<T*> GetNeighboringStates(EAxisList::Type Axes = EAxisList::All) const;
     template <class T>
     T* GetNeighborState(EBlockDirection) const;
 
@@ -42,11 +43,15 @@ private:
 };
 
 template <class T>
-TArray<T*> UBlockState::GetNeighboringStates() const
+TArray<T*> UBlockState::GetNeighboringStates(const EAxisList::Type Axes) const
 {
     TArray<T*> Neighbors;
     for (const EBlockDirection Dir : TEnumRange<EBlockDirection>())
     {
+        if (!EnumHasAnyFlags(Axes, BlockDirection::ToAxis(Dir)))
+        {
+            continue;
+        }
         if (T* State = GetNeighborState<T>(Dir))
         {
             Neighbors.Add(State);

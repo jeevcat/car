@@ -19,4 +19,5 @@ ENUM_RANGE_BY_COUNT(EBlockDirection, EBlockDirection::Num);
 namespace BlockDirection
 {
 FIntVector ToOffset(EBlockDirection Direction);
+EAxisList::Type ToAxis(EBlockDirection Direction);
 }

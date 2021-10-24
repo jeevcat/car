@@ -20,7 +20,7 @@ struct FBlockInstance
     UPROPERTY(EditAnywhere)
     EBlockType Type;
 
-    UPROPERTY()
+    UPROPERTY(Transient)
     UBlockState* State;
 };
 

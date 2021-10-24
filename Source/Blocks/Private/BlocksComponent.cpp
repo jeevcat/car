@@ -38,7 +38,7 @@ void UBlocksComponent::BeginPlay()
     // Create states
     for (auto& [Coords, BlockInstance] : Blocks)
     {
-        if (UBlockSpecification* Spec = Library->Blocks[BlockInstance.Type]; Spec)
+        if (UBlockSpecification* Spec = Library->Blocks[BlockInstance.Type])
         {
             BlockInstance.State = UBlockState::Create(Spec, this, Coords);
         }

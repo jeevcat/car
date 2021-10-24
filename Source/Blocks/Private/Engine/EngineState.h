@@ -4,6 +4,7 @@
 
 #include "BlockState.h"
 #include "CoreMinimal.h"
+#include "EngineShaft.h"
 
 #include "EngineState.generated.h"
 
@@ -18,4 +19,10 @@ class UEngineState final : public UBlockState
 public:
     UFUNCTION(BlueprintCallable)
     float GetPower() const;
+
+private:
+    TSharedRef<FEngineShaft> GetShaft();
+
+    // Doesn't really matter who owns the shaft in an engine, just someone needs to
+    TSharedPtr<FEngineShaft> OwnedShaft;
 };
