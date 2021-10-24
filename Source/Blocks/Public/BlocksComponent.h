@@ -32,8 +32,8 @@ public:
     // Sets default values for this component's properties
     UBlocksComponent();
 
-    template <class T>
-    T* GetState(const FIntVector& Location) const;
+    UFUNCTION(BlueprintPure)
+    UBlockState* GetState(const FIntVector& Location) const;
 
 protected:
     virtual void InitializeComponent() override;
@@ -54,16 +54,3 @@ private:
     UPROPERTY()
     TArray<USceneComponent*> ChildComponents;
 };
-
-template <class T>
-T* UBlocksComponent::GetState(const FIntVector& Location) const
-{
-    if (const FBlockInstance* Instance = Blocks.Find(Location))
-    {
-        if (T* State = Cast<T>(Instance->State))
-        {
-            return State;
-        }
-    }
-    return nullptr;
-}

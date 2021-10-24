@@ -17,6 +17,15 @@ UBlocksComponent::UBlocksComponent()
     // ...
 }
 
+UBlockState* UBlocksComponent::GetState(const FIntVector& Location) const
+{
+    if (const FBlockInstance* Instance = Blocks.Find(Location))
+    {
+        return Instance->State;
+    }
+    return nullptr;
+}
+
 void UBlocksComponent::InitializeComponent()
 {
     Super::InitializeComponent();

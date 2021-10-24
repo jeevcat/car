@@ -8,7 +8,7 @@
 class UBlockState;
 
 UCLASS()
-class BLOCKS_API UBlockSpecification final : public UDataAsset
+class BLOCKS_API UBlockSpecification : public UDataAsset
 {
     GENERATED_BODY()
 

@@ -23,7 +23,14 @@ enum class EBlockDirection : uint8
     XYZ = X | Y | Z,
 };
 
-ENUM_RANGE_BY_FIRST_AND_LAST(EBlockDirection, EBlockDirection::Front, EBlockDirection::Below);
+ENUM_RANGE_BY_VALUES(
+    EBlockDirection,
+    EBlockDirection::Front,
+    EBlockDirection::Behind,
+    EBlockDirection::Right,
+    EBlockDirection::Left,
+    EBlockDirection::Above,
+    EBlockDirection::Below);
 ENUM_CLASS_FLAGS(EBlockDirection);
 
 namespace BlockDirection

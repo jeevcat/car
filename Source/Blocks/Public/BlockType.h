@@ -1,9 +1,10 @@
 #pragma once
 #include "CoreMinimal.h"
 
-UENUM(BlueprintType)
+UENUM()
 enum class EBlockType : uint8
 {
-	EngineV2,
-	FuelLine,
+    None,
+    Engine,
+    FuelLine,
 };

@@ -2,26 +2,17 @@
 
 #include "EngineState.h"
 
-float UEngineState::GetPower() const
+#include "EngineSpecification.h"
+
+UEngineSpecification* UEngineState::GetSpecification() const
 {
-    TArray<UEngineState*> Neighbors = GetNeighboringStates<UEngineState>(EAxisList::X);
-    return 0;
+    return static_cast<UEngineSpecification*>(Super::GetSpecification());
 }
 
-TSharedRef<FEngineShaft> UEngineState::GetShaft()
+float UEngineState::GetTotalPower() const
 {
-    if (OwnedShaft)
-    {
-        return OwnedShaft.ToSharedRef();
-    }
-    for (const UEngineState* State : GetNeighboringStates<UEngineState>(EAxisList::X))
-    {
-        if (State->OwnedShaft)
-        {
-            return State->OwnedShaft.ToSharedRef();
-        }
-    }
-
-    OwnedShaft = MakeShared<FEngineShaft>();
-    return OwnedShaft.ToSharedRef();
+    float TotalPower = 0.f;
+    VisitConnectedStates<UEngineState>([&](const UEngineState* State)
+                                       { TotalPower += State->GetSpecification()->Power; });
+    return TotalPower;
 }

@@ -4,25 +4,21 @@
 
 #include "BlockState.h"
 #include "CoreMinimal.h"
-#include "EngineShaft.h"
+#include "EngineSpecification.h"
 
 #include "EngineState.generated.h"
 
 /**
  *
  */
-UCLASS()
+UCLASS(BlueprintType)
 class UEngineState final : public UBlockState
 {
     GENERATED_BODY()
 
 public:
+    virtual UEngineSpecification* GetSpecification() const override;
+
     UFUNCTION(BlueprintCallable)
-    float GetPower() const;
-
-private:
-    TSharedRef<FEngineShaft> GetShaft();
-
-    // Doesn't really matter who owns the shaft in an engine, just someone needs to
-    TSharedPtr<FEngineShaft> OwnedShaft;
+    float GetTotalPower() const;
 };
