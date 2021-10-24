@@ -2,22 +2,31 @@
 
 #include "CoreMinimal.h"
 
-UENUM()
+UENUM(BlueprintType, meta = (Bitflags, UseEnumValuesAsMaskValuesInEditor = "true"))
 enum class EBlockDirection : uint8
 {
-    Front,
-    Behind,
-    Right,
-    Left,
-    Above,
-    Below,
-    Num UMETA(Hidden)
+    None = 0 UMETA(Hidden),
+    Front = 1 << 0,
+    Behind = 1 << 1,
+    Right = 1 << 2,
+    Left = 1 << 3,
+    Above = 1 << 4,
+    Below = 1 << 5,
+
+    X = Left | Right,
+    Y = Front | Behind,
+    Z = Above | Below,
+
+    XY = X | Y,
+    XZ = X | Z,
+    YZ = Y | Z,
+    XYZ = X | Y | Z,
 };
 
-ENUM_RANGE_BY_COUNT(EBlockDirection, EBlockDirection::Num);
+ENUM_RANGE_BY_FIRST_AND_LAST(EBlockDirection, EBlockDirection::Front, EBlockDirection::Below);
+ENUM_CLASS_FLAGS(EBlockDirection);
 
 namespace BlockDirection
 {
 FIntVector ToOffset(EBlockDirection Direction);
-EAxisList::Type ToAxis(EBlockDirection Direction);
-}
+}    // namespace BlockDirection

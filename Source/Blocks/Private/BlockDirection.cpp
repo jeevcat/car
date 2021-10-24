@@ -10,23 +10,9 @@ const TMap<EBlockDirection, FIntVector> Directions{
     {EBlockDirection::Above, {0, 0, 1}},
     {EBlockDirection::Below, {0, 0, -1}},
 };
-
-const TMap<EBlockDirection, EAxisList::Type> Axes{
-    {EBlockDirection::Front, EAxisList::Y},
-    {EBlockDirection::Behind, EAxisList::Y},
-    {EBlockDirection::Right, EAxisList::X},
-    {EBlockDirection::Left, EAxisList::X},
-    {EBlockDirection::Above, EAxisList::Z},
-    {EBlockDirection::Below, EAxisList::Z},
-};
 }    // namespace
 
 FIntVector BlockDirection::ToOffset(const EBlockDirection Direction)
 {
     return Directions[Direction];
-}
-
-EAxisList::Type BlockDirection::ToAxis(EBlockDirection Direction)
-{
-    return Axes[Direction];
 }

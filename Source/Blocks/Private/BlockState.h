@@ -27,6 +27,9 @@ public:
     const FIntVector& GetLocation() const;
 
     template <class T>
+    TArray<T*> GetConnectedStates() const;
+
+    template <class T>
     TArray<T*> GetNeighboringStates(EAxisList::Type Axes = EAxisList::All) const;
     template <class T>
     T* GetNeighborState(EBlockDirection) const;
@@ -43,12 +46,12 @@ private:
 };
 
 template <class T>
-TArray<T*> UBlockState::GetNeighboringStates(const EAxisList::Type Axes) const
+TArray<T*> UBlockState::GetConnectedStates() const
 {
     TArray<T*> Neighbors;
     for (const EBlockDirection Dir : TEnumRange<EBlockDirection>())
     {
-        if (!EnumHasAnyFlags(Axes, BlockDirection::ToAxis(Dir)))
+        if (!EnumHasAnyFlags(static_cast<EBlockDirection>(Specification->ValidConnectionDirections), Dir))
         {
             continue;
         }
@@ -57,6 +60,13 @@ TArray<T*> UBlockState::GetNeighboringStates(const EAxisList::Type Axes) const
             Neighbors.Add(State);
         }
     }
+    return Neighbors;
+}
+
+template <class T>
+TArray<T*> UBlockState::GetNeighboringStates(const EAxisList::Type Axes) const
+{
+    TArray<T*> Neighbors;
     return Neighbors;
 }
 
