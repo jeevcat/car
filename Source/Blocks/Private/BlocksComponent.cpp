@@ -4,7 +4,6 @@
 
 #include "BlockSpecification.h"
 #include "BlockState.h"
-#include "BlocksLibrary.h"
 
 // Sets default values for this component's properties
 UBlocksComponent::UBlocksComponent()
@@ -30,18 +29,10 @@ void UBlocksComponent::BeginPlay()
 {
     Super::BeginPlay();
 
-    if (!Library)
-    {
-        return;
-    }
-
     // Create states
     for (auto& [Coords, BlockInstance] : Blocks)
     {
-        if (UBlockSpecification* Spec = Library->Blocks[BlockInstance.Type])
-        {
-            BlockInstance.State = UBlockState::Create(Spec, this, Coords);
-        }
+        BlockInstance.State = UBlockState::Create(BlockInstance.Type, this, Coords);
     }
 }
 
@@ -55,22 +46,19 @@ void UBlocksComponent::SpawnChildComponents()
 
     for (auto& [Coords, BlockInstance] : Blocks)
     {
-        if (const UBlockSpecification* Spec = Library->Blocks[BlockInstance.Type])
+        if (!BlockInstance.Type || !BlockInstance.Type->ComponentClass)
         {
-            if (!Spec->ComponentClass)
-            {
-                continue;
-            }
-
-            USceneComponent* Child = NewObject<USceneComponent>(this, Spec->ComponentClass);
-            Child->SetupAttachment(this);
-            Child->SetRelativeLocation(FVector(Coords.X, Coords.Y, Coords.Z) * BlockSize);
-            if (GetWorld())
-            {
-                Child->RegisterComponent();
-            }
-            ChildComponents.Add(Child);
+            continue;
         }
+
+        USceneComponent* Child = NewObject<USceneComponent>(this, BlockInstance.Type->ComponentClass);
+        Child->SetupAttachment(this);
+        Child->SetRelativeLocation(FVector(Coords.X, Coords.Y, Coords.Z) * BlockSize);
+        if (GetWorld())
+        {
+            Child->RegisterComponent();
+        }
+        ChildComponents.Add(Child);
     }
 }
 

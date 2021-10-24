@@ -2,8 +2,7 @@
 
 #pragma once
 
-#include "BlockDirection.h"
-#include "BlockType.h"
+#include "BlockSpecification.h"
 #include "Components/SceneComponent.h"
 #include "CoreMinimal.h"
 
@@ -18,7 +17,7 @@ struct FBlockInstance
     GENERATED_BODY()
 
     UPROPERTY(EditAnywhere)
-    EBlockType Type;
+    UBlockSpecification* Type;
 
     UPROPERTY(Transient)
     UBlockState* State;
@@ -44,9 +43,6 @@ protected:
 #endif
 
     void SpawnChildComponents();
-
-    UPROPERTY(EditDefaultsOnly)
-    UBlocksLibrary* Library;
 
     UPROPERTY(EditDefaultsOnly)
     float BlockSize = 50.f;

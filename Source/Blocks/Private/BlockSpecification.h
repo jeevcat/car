@@ -4,6 +4,7 @@
 #include "BlockSpecification.generated.h"
 
 class UBlockState;
+
 UCLASS()
 class BLOCKS_API UBlockSpecification final : public UDataAsset
 {
