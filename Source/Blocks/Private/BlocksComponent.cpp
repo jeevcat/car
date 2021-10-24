@@ -26,6 +26,24 @@ UBlockState* UBlocksComponent::GetState(const FIntVector& Location) const
     return nullptr;
 }
 
+TArray<UBlockSpecification*> UBlocksComponent::GetSpecifications(TSubclassOf<UBlockSpecification> Class)
+{
+    TArray<UBlockSpecification*> Specs;
+    for (auto& [Coords, BlockInstance] : Blocks)
+    {
+        if (BlockInstance.Type && BlockInstance.Type.IsA(Class))
+        {
+            Specs.Add(BlockInstance.Type);
+        }
+    }
+    return Specs;
+}
+
+const TMap<FIntVector, FBlockInstance>& UBlocksComponent::GetBlockInstances() const
+{
+    return Blocks;
+}
+
 void UBlocksComponent::InitializeComponent()
 {
     Super::InitializeComponent();
@@ -41,7 +59,10 @@ void UBlocksComponent::BeginPlay()
     // Create states
     for (auto& [Coords, BlockInstance] : Blocks)
     {
-        BlockInstance.State = UBlockState::Create(BlockInstance.Type, this, Coords);
+        if (BlockInstance.Type->StateClass)
+        {
+            BlockInstance.State = UBlockState::Create(BlockInstance.Type, this, Coords);
+        }
     }
 }
 

@@ -20,6 +20,7 @@ public:
     UPROPERTY(EditAnywhere)
     TSubclassOf<UBlockState> StateClass;
 
+    // Can be null if no component needed
     UPROPERTY(EditAnywhere)
     TSubclassOf<USceneComponent> ComponentClass;
 

@@ -17,10 +17,10 @@ struct FBlockInstance
     GENERATED_BODY()
 
     UPROPERTY(EditAnywhere)
-    UBlockSpecification* Type;
+    TObjectPtr<UBlockSpecification> Type;
 
     UPROPERTY(Transient)
-    UBlockState* State;
+    TObjectPtr<UBlockState> State;
 };
 
 UCLASS(ClassGroup = (Blocks), meta = (BlueprintSpawnableComponent))
@@ -35,12 +35,15 @@ public:
     UFUNCTION(BlueprintPure)
     UBlockState* GetState(const FIntVector& Location) const;
 
+    UFUNCTION(BlueprintPure)
+    TArray<UBlockSpecification*> GetSpecifications(TSubclassOf<UBlockSpecification> Class);
+
+    UFUNCTION(BlueprintPure)
+    const TMap<FIntVector, FBlockInstance>& GetBlockInstances() const;
+
 protected:
     virtual void InitializeComponent() override;
     virtual void BeginPlay() override;
-#if WITH_EDITOR
-    virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
-#endif
 
     void SpawnChildComponents();
 
@@ -51,6 +54,10 @@ protected:
     TMap<FIntVector, FBlockInstance> Blocks;
 
 private:
-    UPROPERTY()
-    TArray<USceneComponent*> ChildComponents;
+#if WITH_EDITOR
+    virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+#endif
+
+    UPROPERTY(Transient)
+    TArray<TObjectPtr<USceneComponent>> ChildComponents;
 };

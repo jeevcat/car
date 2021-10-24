@@ -40,10 +40,10 @@ public:
 
 protected:
     UPROPERTY(Transient)
-    UBlocksComponent* OwningComponent;
+    TObjectPtr<UBlocksComponent> OwningComponent;
 
     UPROPERTY(Transient)
-    UBlockSpecification* Specification;
+    TObjectPtr<UBlockSpecification> Specification;
 
 private:
     FIntVector Location;
